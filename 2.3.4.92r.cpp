@@ -1,6 +1,7 @@
 #include <iostream> 
 #include <iomanip> // For setting output format 
 #include <fstream> // For file input/output 
+#include <cstdlib>
 using namespace std; 
 #pragma GCC optimize(3)
 #pragma GCC target("avx")
@@ -71,6 +72,7 @@ void changeLanguage() {
         cout << "Invalid choice, language remains unchanged." << endl; 
         return; 
     } 
+    system("cls");
 
     // Save language choice to file 
     ofstream outFile("config_lang.ini"); 
@@ -221,7 +223,7 @@ void calculateMaxDamage(double ecr_local = desiredCritRate, double step_local = 
         		for (double k = 0.0; (k <= pr - i - j) and (k <= ecr * 2 - 10); k += s) {
         			pcr = 5 + k * 0.5; 
             		pcd = 50 + pr - i - j - k; 
-            		pd = pa * (pcr * 0.01 * (1 + pcd * 0.01) + (1 - pcr * 0.01) * 1) * (m + 100) * 0.01;
+            		pd = pa * (pcr * 0.01 * (1 + pcd * 0.01) + (1 - pcr * 0.01) * 1);
         	    	if (choiceElement == 1 and choiceAimElement == 1) ped = pd * 1.5 * (1 + (2.78 * pem) / (pem + 1400));
     	        	else if (choiceElement == 1 and choiceAimElement == 2) ped = pd * 2 * (1 + (2.78 * pem) / (pem + 1400));
 	            	else if (choiceElement == 2 and choiceAimElement == 1) ped = pd * 2 * (1 + (2.78 * pem) / (pem + 1400));
@@ -247,7 +249,7 @@ void calculateMaxDamage(double ecr_local = desiredCritRate, double step_local = 
         	for (double j = 0.0; (j <= pr - i) and (j <= ecr * 2 - 10); j += s) {
         		pcr = 5 + j * 0.5;
             	pcd = 50 + pr - i - j; 
-            	ped = pa * (pcr * 0.01 * (1 + pcd * 0.01) + (1 - pcr * 0.01)) * (m + 100) * 0.01;
+            	ped = pa * (pcr * 0.01 * (1 + pcd * 0.01) + (1 - pcr * 0.01) * 1);
         	    if(ped > d) {
     	        	d = ped; 
 	            	acr = pcr; 
@@ -260,11 +262,11 @@ void calculateMaxDamage(double ecr_local = desiredCritRate, double step_local = 
 			cout << i / pr * 100 << "%" << endl;
     	} 
 	}
-    
+    system("cls");
 
     // Output results 
     printLocalizedText("Your character's maximum damage can reach:", "您的角色的最大伤害可以达到："); 
-    cout << d * r * 0.01 << endl; 
+    cout << d * r * 0.01 * (m + 100) * 0.01 << endl; 
     printLocalizedText("Your character's rating is: ", "您的角色的评分为："); 
     cout << totpr << endl; 
     printLocalizedText("Character's attack or health value at this time:", "此时角色的攻击或生命值为："); 
@@ -286,6 +288,7 @@ void updateEcrValue() {
 
     // Update the global variable
     desiredCritRate = newEcr;
+    system("cls");
 
     ofstream outFileDesiredCRITrate("config_ecd.ini"); // Changed filename to config_ecd.ini
     if (outFileDesiredCRITrate.is_open()) { 
@@ -349,6 +352,7 @@ void loadCalculateStep() {
     } else {
         cerr << "Unable to open file to load calculate step settings." << endl;
     }
+    system("cls");
 }
 
 int main() {
@@ -366,7 +370,7 @@ int main() {
 
     int choice;
     do {
-    	printLocalizedText("Genshin Impact Max Damage Calculator v2.3.1.80r", "原神最大伤害计算器 v2.3.1.80r");
+    	printLocalizedText("Genshin Impact Max Damage Calculator v2.3.4.92r", "原神最大伤害计算器 v2.3.1.80r");
         printLocalizedText("1. Calculate maximum damage", "1. 计算最大伤害");
         printLocalizedText("2. Exit program", "2. 退出程序");
         printLocalizedText("3. Desired CRIT rate(if you used this program)", "3. 期望暴击率（如果你使用过此程序）");
@@ -377,18 +381,22 @@ int main() {
 
         switch (choice) {
         case 1:
+        	system("cls");
             calculateMaxDamage(desiredCritRate);
             break;
         case 2:
             printLocalizedText("Thank you for using, goodbye!", "感谢使用，再见！");
             break;
         case 3:
+        	system("cls");
             updateEcrValue(); // Call the function to update ECR
             break;
         case 4:
+        	system("cls");
             changeLanguage(); // Call the function to change language
             break;
         case 5:
+        	system("cls");
         	updateCalculateStep();
         	break;
         default:
@@ -398,17 +406,3 @@ int main() {
 
     return 0;
 }
-/*
-1
-2087
-89.7
-232.2
-1012
-100
-146.6
-1
-1
-100
-2
-
-*/
